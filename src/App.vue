@@ -48,7 +48,8 @@ const handleClick = async () => {
     author.value = response.data.auteur
     book.value = response.data.ouvrage
     photo.value = response.data.photo
-    //console.log('response.Data >>>>>', response.data)
+    quoteId.value = response.data.id
+    console.log('response.Data >>>>>', response.data)
 
     showAuthor.value = false
     showBook.value = false
@@ -68,6 +69,7 @@ const quoteId = ref('')
 const isFavorite = () => favorites.value.some(fav => fav.id === quoteId.value)
 
 const toggleFavorite = async () => {
+  console.log('ID.value>>>>', quoteId.value)
   if (!isLoggedIn.value) {
     showLoginModal.value = true
     return
@@ -102,22 +104,15 @@ const toggleFavorite = async () => {
 
 const loadFavorites = async () => {
   try {
-    const response = await axios.get('http://localhost:1337/api/users/me', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await axios.get(
+      'http://localhost:1337/api/users/me?populate=*',
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    )
     console.log('Response data:', response.data)
 
-    favorites.value = Array.isArray(response.data.favorites)
-      ? response.data.favorites.map(fav => ({
-          id: fav.id,
-          quote: fav.quote.fr.citation,
-          author: fav.quote.fr.auteur,
-          book: fav.quote.fr.ouvrage,
-          photo: fav.photo?.url
-            ? `http://localhost:1337${fav.photo.url}`
-            : null,
-        }))
-      : []
+    favorites.value = response.data.favorites
   } catch (error) {
     console.error('Error loading favorites:', error)
   }
@@ -132,51 +127,54 @@ const openFavorites = async () => {
 
 <template>
   <div class="body">
-    <div class="banner"></div>
-
-    <div class="top">
+    <div class="banner">
       <div v-if="isLoggedIn" class="nameUser">
-        Welcome, {{ userName }}!
+        <span>Welcome, {{ userName }}!</span>
         <button @click="openFavorites">View Favorites</button>
       </div>
-    </div>
-    <div>
-      <div class="quote">
-        <h1>Get inspired or test your knowledge of philosophy!</h1>
+      <div id="main-content">
+        <h1>Echoes of Wisdom</h1>
+        <h2 class="philosophy-quote">
+          Get inspired or test your knowledge of philosophy!
+        </h2>
 
-        <button @click="handleClick">Get a Random Philosophical Quote</button>
+        <div class="quote-actions">
+          <button @click="handleClick">Get a Random Philosophical Quote</button>
+          <button @click="toggleFavorite" class="heart-btn">
+            <font-awesome-icon
+              :icon="isFavorite() ? ['fas', 'heart'] : ['far', 'heart']"
+            />
+          </button>
+        </div>
+
         <p v-if="quote" class="quote">{{ quote }}</p>
 
-        <div class="author">
-          <button v-if="quote" @click="toggleAuthor">
-            {{ showAuthor ? 'Hide the Author' : 'Who said that?' }}
-          </button>
+        <div class="quote-details">
+          <div class="author">
+            <button v-if="quote" @click="toggleAuthor">
+              {{ showAuthor ? 'Hide the Author' : 'Who said that?' }}
+            </button>
 
-          <p v-if="showAuthor">- {{ author }}</p>
-          <div v-if="showAuthor">
-            <img
-              v-if="photo"
-              :src="photo"
-              alt="Philosopher's photo"
-              style="max-width: 200px"
-            />
+            <div v-if="showAuthor" class="author-info">
+              <p>- {{ author }}</p>
+              <img
+                class="photo-philo"
+                v-if="photo"
+                :src="photo"
+                alt="Philosopher's photo"
+              />
+            </div>
+          </div>
+
+          <div class="book-info">
+            <button v-if="quote" @click="toggleBook">
+              {{
+                showBook ? 'Hide the book' : 'Where does this quote come from?'
+              }}
+            </button>
+            <p v-if="showBook">- {{ book }}</p>
           </div>
         </div>
-
-        <div>
-          <button v-if="quote" @click="toggleBook">
-            {{
-              showBook ? 'Hide the book' : 'Where does this quote come from?'
-            }}
-          </button>
-          <p v-if="showBook">- {{ book }}</p>
-        </div>
-
-        <button @click="toggleFavorite" class="heart-btn">
-          <font-awesome-icon
-            :icon="isFavorite() ? ['fas', 'heart'] : ['far', 'heart']"
-          />
-        </button>
       </div>
     </div>
   </div>
@@ -195,75 +193,219 @@ const openFavorites = async () => {
 </template>
 
 <style scoped>
-.photo-philo {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 10%;
-}
+/* main content */
+
+/* .quote {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid #d1a873;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+} */
 
 .heart-btn svg:hover {
   transform: scale(1.1);
   transition: transform 0.2s;
 }
 
-body {
-  background-image: url('./assets/img/premium_photo-1672944876342-4090.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  margin: 0;
-  min-height: 100vh;
+.heart-btn {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
-.banner {
-  width: 100%;
-  height: 30vw;
-  background-image: url('./assets/img/banner_quotes.png');
-  padding: 50px;
+.body {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('@/assets/img/banner-collage.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 0;
 }
 
+.banner {
+  width: 100%;
+  height: 120%;
+  background-image: url('@/assets/img/new-banner.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 170px;
+}
+
+#main-content {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  margin: 0 auto;
+}
 .nameUser {
   font-family: 'Great Vibes', cursive;
-  padding: 4px;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nameUser button {
+  margin-top: 10px;
 }
 
 h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: xx-large;
-  margin-bottom: 40px;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px #9e9e9e;
+}
+h2 {
+  font-family: 'Great Vibes', cursive;
 }
 
-.quote {
+.philosophy-quote {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.quote-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.quote-action > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.quote-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  padding-right: 20px;
+  position: absolute;
+}
+
+.author-info {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  margin: 20px 0;
+  justify-content: center;
+}
+.book-info {
+  text-align: right;
+  margin-top: 20px;
+  width: 250px;
 }
 
-.author {
+.photo-philo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 10%;
+  margin-left: 20px;
+}
+
+.book-info {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.heart-btn {
+  margin-top: 20px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .philosophy-quote {
+    font-size: 1.3rem;
+  }
   .banner {
-    height: 150px;
+    height: 160%;
+  }
+  #main-content {
+    grid-template-rows: auto auto auto auto;
+    width: 70%;
+  }
+  .quote-actions {
+    margin: 3px 0;
+  }
+
+  .quote-details {
+    margin-top: 20px;
+  }
+  .banner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
 @media (max-width: 480px) {
   .banner {
-    height: 120px;
+    height: 200%;
     background-size: contain;
+    background-position: center;
+  }
+  #main-content {
+    grid-template-rows: auto auto auto auto;
+    width: 70%;
+  }
+  .nameUser {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.2rem;
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 0px;
+    text-shadow: 2px 2px 5px #9e9e9e;
+  }
+
+  .philosophy-quote {
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1px;
   }
 }
 </style>
