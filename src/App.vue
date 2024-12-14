@@ -341,10 +341,6 @@ h2 {
   margin-top: 10px;
 }
 
-.heart-btn {
-  margin-top: 20px;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
@@ -371,7 +367,7 @@ h2 {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: flex-start;
   }
