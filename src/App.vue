@@ -195,18 +195,6 @@ const openFavorites = async () => {
 <style scoped>
 /* main content */
 
-/* .quote {
-  font-family: 'Georgia', serif;
-  font-style: italic;
-  font-size: 1.5rem;
-  padding: 20px;
-  background: #fff;
-  border: 2px solid #d1a873;
-  border-radius: 10px;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-  margin-top: 20px;
-} */
-
 .heart-btn svg:hover {
   transform: scale(1.1);
   transition: transform 0.2s;
@@ -325,6 +313,10 @@ h2 {
   text-align: right;
   margin-top: 20px;
   width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-end;
 }
 
 .photo-philo {
@@ -402,6 +394,36 @@ h2 {
     font-size: 1rem;
     text-align: center;
     margin-top: 1px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  /* Conteneur principal */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 15px;
+  }
+
+  /* Bannière ou titre principal */
+  .banner {
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  /* Citations */
+  .quote {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 10px;
+    text-align: center;
+    background-color: #fdfdfd;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   }
 }
 </style>

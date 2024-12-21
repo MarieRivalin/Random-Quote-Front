@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div>
+  <div class="fav-modal">
     <h2>Your Favorite Quotes:</h2>
     <ul v-if="props.favorites.length">
       <li v-for="fav in props.favorites" :key="fav.quote">
@@ -20,12 +20,7 @@ const props = defineProps({
         <p>
           <i>{{ fav.quote.en.ouvrage }}</i>
         </p>
-        <img
-          v-if="fav.photo"
-          :src="fav.photo"
-          alt="Philosopher's photo"
-          style="max-width: 100px"
-        />
+        <hr />
       </li>
     </ul>
     <p v-else>No favorites yet. Add some quotes!</p>
@@ -41,5 +36,14 @@ p {
   font-family: 'Great Vibes', cursive;
   font-size: 15px;
   margin-bottom: 10px;
+}
+
+.fav-modal {
+  height: 100%;
+}
+
+ul {
+  height: 90%;
+  overflow-y: scroll;
 }
 </style>

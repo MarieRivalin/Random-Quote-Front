@@ -2,7 +2,7 @@
   <div class="modal-overlay" @click="$emit('close')">
     <div class="modal-content" @click.stop>
       <slot />
-      <button @click="$emit('close')">Close</button>
+      <button class="modal-button" @click="$emit('close')">Close</button>
     </div>
   </div>
 </template>
@@ -23,8 +23,16 @@
 .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 1rem;
   width: 90%;
   max-width: 500px;
+  height: 60vh;
+  position: relative;
+}
+
+.modal-button {
+  position: absolute;
+  top: -20px;
+  right: 30px;
 }
 </style>

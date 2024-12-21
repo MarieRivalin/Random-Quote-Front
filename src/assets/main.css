@@ -1,9 +1,8 @@
 @import './base.css';
 
-button {
+/* button {
   padding: 8px 20px;
   border-radius: 20px;
-  /* border-color: #483023; */
   border: none;
   background-color: #e4c4a0;
   cursor: pointer;
@@ -15,4 +14,16 @@ button:hover {
   background-color: black;
   color: #e4c4a0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+} */
+
+/* CSS */
+button {
+  padding: 1rem 2rem;
+  border-radius: 90rem;
+  box-shadow: 5px 5px 0px 2px #000000;
+  background-color: #fbede0;
+  transition: all 0.3s;
+}
+button:hover {
+  background-color: bisque;
 }
