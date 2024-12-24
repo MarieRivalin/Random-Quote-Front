@@ -16,10 +16,13 @@ const toggleMode = () => {
 
 const login = async () => {
   try {
-    const response = await axios.post('http://localhost:1337/api/auth/local', {
-      identifier: email.value,
-      password: password.value,
-    })
+    const response = await axios.post(
+      'https://site--random-quote-back--q48zs5sj4mxl.code.run/api/auth/local',
+      {
+        identifier: email.value,
+        password: password.value,
+      },
+    )
     alert('Successful login! 🎉')
     localStorage.setItem('token', response.data.jwt) / router.push('/')
   } catch (error) {
@@ -31,7 +34,7 @@ const login = async () => {
 const register = async () => {
   try {
     const response = await axios.post(
-      'http://localhost:1337/api/auth/local/register',
+      'https://site--random-quote-back--q48zs5sj4mxl.code.run/api/auth/local/register',
       {
         username: name.value,
         email: email.value,
@@ -84,4 +87,66 @@ const register = async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 1rem;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  height: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin: auto;
+}
+
+h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+input {
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+p {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  align-self: center;
+  width: fit-content;
+  padding: 0.5rem 1.5rem;
+}
+</style>

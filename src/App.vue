@@ -26,11 +26,14 @@ const favorites = ref([])
 onMounted(async () => {
   if (isLoggedIn.value) {
     try {
-      const response = await axios.get('http://localhost:1337/api/users/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        'https://site--random-quote-back--q48zs5sj4mxl.code.run/api/users/me',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
       userName.value = response.data.username
       await loadFavorites()
     } catch (error) {
@@ -42,7 +45,7 @@ onMounted(async () => {
 const handleClick = async () => {
   try {
     const response = await axios.get(
-      'http://localhost:1337/api/quotes/random-english',
+      'https://site--random-quote-back--q48zs5sj4mxl.code.run/api/quotes/random-english',
     )
     quote.value = response.data.citation
     author.value = response.data.auteur
@@ -50,6 +53,7 @@ const handleClick = async () => {
     photo.value = response.data.photo
     quoteId.value = response.data.id
     console.log('response.Data >>>>>', response.data)
+    console.log('photo>>>>>', response.data.photo)
 
     showAuthor.value = false
     showBook.value = false
@@ -78,7 +82,7 @@ const toggleFavorite = async () => {
   try {
     if (isFavorite()) {
       const response = await axios.delete(
-        `http://localhost:1337/api/quotes/remove-favorite`,
+        `https://site--random-quote-back--q48zs5sj4mxl.code.run/api/quotes/remove-favorite`,
         {
           headers: { Authorization: `Bearer ${token}` },
           data: { quoteId: quoteId.value },
@@ -89,7 +93,7 @@ const toggleFavorite = async () => {
       alert('Quote removed from favorites!')
     } else {
       const response = await axios.post(
-        `http://localhost:1337/api/quotes/add-favorites`,
+        `https://site--random-quote-back--q48zs5sj4mxl.code.run/api/quotes/add-favorites`,
         { quoteId: quoteId.value },
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -105,7 +109,7 @@ const toggleFavorite = async () => {
 const loadFavorites = async () => {
   try {
     const response = await axios.get(
-      'http://localhost:1337/api/users/me?populate=*',
+      'https://site--random-quote-back--q48zs5sj4mxl.code.run/api/users/me?populate=*',
       {
         headers: { Authorization: `Bearer ${token}` },
       },
@@ -140,7 +144,7 @@ const openFavorites = async () => {
 
         <div class="quote-actions">
           <button @click="handleClick">Get a Random Philosophical Quote</button>
-          <button @click="toggleFavorite" class="heart-btn">
+          <button v-if="quote" @click="toggleFavorite" class="heart-btn">
             <font-awesome-icon
               :icon="isFavorite() ? ['fas', 'heart'] : ['far', 'heart']"
             />
@@ -397,33 +401,154 @@ h2 {
   }
 }
 
-@media only screen and (max-width: 375px) {
-  /* Conteneur principal */
-  .container {
+/* @media only screen and (max-width: 375px) {
+  .banner {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     padding: 10px;
+    background-size: contain;
+    background-position: center;
+    height: auto;
+  }
+
+  #main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 15px;
-  }
-
-  /* Bannière ou titre principal */
-  .banner {
-    width: 100%;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  /* Citations */
-  .quote {
-    font-size: 0.9rem;
-    line-height: 1.4;
+    width: 90%;
     padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .philosophy-quote {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+
+  .quote-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .quote-actions button {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .quote {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .quote-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .author-info,
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .photo-philo {
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
+  }
+
+  .nameUser {
+    font-size: 1rem;
     text-align: center;
-    background-color: #fdfdfd;
-    border-radius: 5px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+
+  .nameUser button {
+    margin-top: 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+} */
+
+@media only screen and (max-width: 375px) {
+  /* Bannière */
+  #banner {
+    height: 20vh;
+    background-position: center;
+  }
+
+  /* Déplacement du nom de l'utilisateur */
+  #nameUser {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+  }
+
+  /* Déplacement du bouton "View Favorites" */
+  #viewFavorites {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    font-size: 14px;
+  }
+
+  /* Boutons "Who said that?" et "Where does this quote come from?" */
+  #whoSaid,
+  #whereFrom {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 5px 0;
+    font-size: 12px;
+  }
+
+  #whoSaid {
+    margin-right: 0;
+  }
+
+  /* Centrage du bouton principal */
+  #randomQuoteButton {
+    display: block;
+    margin: 25vh auto;
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  /* Centrage du texte principal */
+  #main-content {
+    text-align: center;
+    margin-top: 5vh;
+    font-size: 14px;
+  }
+
+  /* Texte en bas (Dare to know!) */
+  #footerText {
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+    font-size: 12px;
   }
 }
 </style>
