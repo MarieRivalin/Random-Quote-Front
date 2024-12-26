@@ -132,11 +132,11 @@ const openFavorites = async () => {
 <template>
   <div class="body">
     <div class="banner">
-      <div v-if="isLoggedIn" class="nameUser">
-        <span>Welcome, {{ userName }}!</span>
-        <button @click="openFavorites">View Favorites</button>
-      </div>
       <div id="main-content">
+        <div v-if="isLoggedIn" class="nameUser">
+          <span>Welcome, {{ userName }}!</span>
+          <button @click="openFavorites">View Favorites</button>
+        </div>
         <h1>Echoes of Wisdom</h1>
         <h2 class="philosophy-quote">
           Get inspired or test your knowledge of philosophy!
@@ -303,9 +303,9 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 100%;
   padding-right: 20px;
   position: absolute;
+  right: 0;
 }
 
 .author-info {
@@ -346,11 +346,13 @@ h2 {
     font-size: 1.3rem;
   }
   .banner {
-    height: 160%;
+    /* height: 160%; */
   }
   #main-content {
     grid-template-rows: auto auto auto auto;
     width: 70%;
+    background-color: white;
+    border-radius: 30px;
   }
   .quote-actions {
     margin: 3px 0;
@@ -358,14 +360,18 @@ h2 {
 
   .quote-details {
     margin-top: 20px;
+    position: static;
   }
   .banner {
-    height: 100%;
+    /* height: 100%; */
     width: 100%;
     display: flex;
     /* flex-direction: column; */
     align-items: center;
     justify-content: flex-start;
+  }
+  .nameUser {
+    position: static;
   }
 }
 @media (max-width: 480px) {
