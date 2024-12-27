@@ -217,7 +217,7 @@ const openFavorites = async () => {
 
 .body {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url('@/assets/img/banner-collage.png');
   background-size: cover;
   background-position: center;
@@ -230,21 +230,19 @@ const openFavorites = async () => {
 }
 
 .banner {
-  width: 100%;
-  height: 120%;
+  width: 100vw;
+  min-height: 700px;
   background-image: url('@/assets/img/new-banner.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-left: auto;
-  margin-right: auto;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 170px;
+  position: relative;
 }
 
 #main-content {
@@ -306,12 +304,14 @@ h2 {
   padding-right: 20px;
   position: absolute;
   right: 0;
+  top: 200px;
 }
 
 .author-info {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 }
 .book-info {
   text-align: right;
@@ -338,7 +338,7 @@ h2 {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   h1 {
     font-size: 2rem;
   }
@@ -346,13 +346,14 @@ h2 {
     font-size: 1.3rem;
   }
   .banner {
-    /* height: 160%; */
+    min-height: auto;
   }
   #main-content {
     grid-template-rows: auto auto auto auto;
-    width: 70%;
+    width: 98%;
     background-color: white;
     border-radius: 30px;
+    padding: 20px;
   }
   .quote-actions {
     margin: 3px 0;
@@ -361,6 +362,14 @@ h2 {
   .quote-details {
     margin-top: 20px;
     position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .banner {
     /* height: 100%; */
@@ -376,13 +385,12 @@ h2 {
 }
 @media (max-width: 480px) {
   .banner {
-    height: 200%;
+    /* height: 200%; */
     background-size: contain;
     background-position: center;
   }
   #main-content {
     grid-template-rows: auto auto auto auto;
-    width: 70%;
   }
   .nameUser {
     font-family: 'Great Vibes', cursive;
@@ -406,93 +414,4 @@ h2 {
     margin-top: 1px;
   }
 }
-
-/* @media only screen and (max-width: 375px) {
-  .banner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px;
-    background-size: contain;
-    background-position: center;
-    height: auto;
-  }
-
-  #main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 15px;
-    width: 90%;
-    padding: 10px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
-  .philosophy-quote {
-    font-size: 1rem;
-    margin: 5px 0;
-  }
-
-  .quote-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .quote-actions button {
-    padding: 10px;
-    font-size: 1rem;
-  }
-
-  .quote {
-    font-size: 1rem;
-    line-height: 1.4;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .quote-details {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    align-items: center;
-  }
-
-  .author-info,
-  .book-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .photo-philo {
-    width: 50px;
-    height: 50px;
-    margin-top: 5px;
-  }
-
-  .nameUser {
-    font-size: 1rem;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .nameUser button {
-    margin-top: 5px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-} */
 </style>
