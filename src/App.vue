@@ -210,7 +210,7 @@ const openFavorites = async () => {
   justify-content: center;
   font-size: 1.5rem;
   padding: 5px;
-  border: none;
+  border: black 1px solid;
   background: transparent;
   cursor: pointer;
 }
@@ -313,6 +313,10 @@ h2 {
   justify-content: center;
   margin-top: 10px;
 }
+.author {
+  display: flex;
+  flex-direction: column;
+}
 .book-info {
   text-align: right;
   margin-top: 20px;
@@ -372,10 +376,8 @@ h2 {
     align-items: center;
   }
   .banner {
-    /* height: 100%; */
     width: 100%;
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     justify-content: flex-start;
   }
@@ -385,7 +387,6 @@ h2 {
 }
 @media (max-width: 480px) {
   .banner {
-    /* height: 200%; */
     background-size: contain;
     background-position: center;
   }

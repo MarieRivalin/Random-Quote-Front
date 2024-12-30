@@ -1,21 +1,5 @@
 @import './base.css';
 
-/* button {
-  padding: 8px 20px;
-  border-radius: 20px;
-  border: none;
-  background-color: #e4c4a0;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Great Vibes', cursive;
-  font-size: 15px;
-}
-button:hover {
-  background-color: black;
-  color: #e4c4a0;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-} */
-
 /* CSS */
 button {
   padding: 1rem 2rem;
@@ -23,6 +7,7 @@ button {
   box-shadow: 5px 5px 0px 2px #000000;
   background-color: #fbede0;
   transition: all 0.3s;
+  border: black 1px solid;
 }
 button:hover {
   background-color: bisque;
